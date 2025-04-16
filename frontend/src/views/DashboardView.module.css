@@ -1,0 +1,13 @@
+.dashboardView {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .cardsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  

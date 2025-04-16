@@ -1,0 +1,38 @@
+
+/* Paleta de colores y variables */
+:root {
+  --color-bg: #1E1E2F;           /* Fondo principal */
+  --color-bg-secondary: #29293D;  /* Paneles/cards */
+  --color-text: #EAEAEA;         /* Texto principal */
+  --color-accent: #7F5AF0;       /* Acento principal */
+  --color-accent-alt: #21C97A;   /* Acento secundario */
+  --border-radius: 8px;
+  --font-family: 'Poppins', sans-serif;
+}
+
+/* Reset y fuente */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* Layout Principal */
+.appContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* El contenido principal (derecha) respetará el ancho del sidebar */
+.mainContent {
+  flex: 1;
+  padding: 20px 40px;
+  background: var(--color-bg);
+}

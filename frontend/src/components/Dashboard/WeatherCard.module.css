@@ -1,0 +1,74 @@
+.card {
+  background-color: var(--color-bg-secondary);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 400px;
+  height: 100%;
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.weatherInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.weatherHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.weatherIcon {
+  color: var(--color-accent, #ff7300);
+  filter: drop-shadow(0 0 5px rgba(255, 115, 0, 0.2));
+}
+
+.weatherMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dataRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.label {
+  color: var(--color-text-secondary);
+  margin-right: 0.5rem;
+}
+
+.weatherDesc {
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.chartContainer {
+  margin-top: auto;
+  height: 180px;
+  width: 100%;
+  overflow: hidden;
+}

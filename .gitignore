@@ -1,0 +1,49 @@
+# General
+.DS_Store
+.env
+.env.*
+
+# GitHub Secrets local (si los usas en forma de archivo)
+.gitignore.secrets
+
+# Python / Flask (Backend)
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+venv/
+.env
+instance/
+*.sqlite3
+*.db
+
+# Si utilizas pipenv o poetry:
+Pipfile.lock
+poetry.lock
+
+# Node / React (Frontend)
+node_modules/
+build/
+dist/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker 
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Logs
+*.log
+logs/
+*.out
+
+# IDEs y editores comunes
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Otros archivos y carpetas de sistema
+Thumbs.db

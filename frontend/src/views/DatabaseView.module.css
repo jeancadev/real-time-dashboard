@@ -1,0 +1,126 @@
+.container {
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  max-width: 1000px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.controls input {
+  padding: 5px;
+  border: 1px solid #3A3A4A;
+  border-radius: var(--border-radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.controls button {
+  padding: 5px 10px;
+  border: none;
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.controls button:hover {
+  background: #7F5AF0;
+}
+
+.recordsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.recordsTable th,
+.recordsTable td {
+  border: 1px solid #3A3A4A;
+  padding: 10px;
+  text-align: left;
+  color: var(--color-text);
+}
+
+.recordsTable th {
+  background: var(--color-bg);
+  color: var(--color-accent);
+}
+
+.deleteButton {
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.deleteButton:hover {
+  transform: scale(1.2);
+}
+
+.message {
+  margin-top: 1rem;
+  color: var(--color-text);
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: none;
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pagination button:hover {
+  background: #7F5AF0;
+}
+
+.pagination span {
+  color: var(--color-text);
+}
+
+.authMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-secondary);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 1rem 0;
+  color: var(--color-text-secondary);
+  text-align: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.authMessage svg {
+  color: var(--color-accent, #ff7300);
+  opacity: 0.8;
+}
+
+.authMessage p {
+  font-size: 1.2rem;
+  margin: 0;
+}

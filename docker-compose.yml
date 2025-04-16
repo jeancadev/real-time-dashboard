@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dashboard_backend
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: production
+      # Se puede agregar otras variables de entorno aquí, incluidas las claves sensibles
+      # OPENWEATHER_API_KEY, SECRET_KEY, etc.
+      OPENWEATHER_API_KEY: "fd17340b9139c6e35b3e4561824d81aa"
+      SECRET_KEY: "CLAVE_SECRETA_1234"
+    volumes:
+      - ./backend/instance:/app/instance  # Para persistir la base de datos
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dashboard_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
