@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from app.api.auth import token_required
 from app.models.data_models import db, Record
 from datetime import datetime
+from app.events import notify_database_change
 
 database_bp = Blueprint('database', __name__)
 
@@ -54,6 +55,14 @@ def get_records(current_user_id):
         'timestamp': record.timestamp.isoformat()
     } for record in pagination.items]
 
+    # Notificar sobre la consulta realizada
+    notify_database_change("query", "read", {
+        'user_id': current_user_id,
+        'record_type': record_type,
+        'count': len(records_list),
+        'page': page
+    })
+
     return jsonify({
         'user_id': current_user_id,
         'records': records_list,
@@ -72,19 +81,27 @@ def add_record(current_user_id):
     if not record_type or not record_data:
         return jsonify({'error': 'record_type and data are required'}), 400
     
-    new_record = Record(
-        record_type="weather",
-        data=json.dumps(weather_data),
-        user_id=user.id,
-        timestamp=datetime.datetime.utcnow()
-    )
-    db.session.add(new_record)
     try:
+        new_record = Record(
+            record_type=record_type,
+            data=json.dumps(record_data),
+            user_id=current_user_id,
+            timestamp=datetime.utcnow()
+        )
+        db.session.add(new_record)
         db.session.commit()
+        
+        # Emitir evento de creación de registro
+        notify_database_change(record_type, "create", {
+            'id': new_record.id,
+            'user_id': current_user_id,
+            'timestamp': new_record.timestamp.isoformat()
+        })
+        
+        return jsonify({'message': 'Record added successfully.', 'id': new_record.id}), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': 'Error adding record.'}), 500
-    return jsonify({'message': 'Record added successfully.'}), 201
+        return jsonify({'error': f'Error adding record: {str(e)}'}), 500
 
 @database_bp.route('/records/<int:record_id>', methods=['DELETE'])
 @token_required
@@ -92,10 +109,20 @@ def delete_record(current_user_id, record_id):
     record = Record.query.filter_by(id=record_id, user_id=current_user_id).first()
     if not record:
         return jsonify({'error': 'Record not found.'}), 404
+    
+    record_type = record.record_type
+    
     try:
         db.session.delete(record)
         db.session.commit()
+        
+        # Emitir evento de eliminación de registro
+        notify_database_change(record_type, "delete", {
+            'id': record_id,
+            'user_id': current_user_id
+        })
+        
         return jsonify({'message': 'Record deleted successfully.'})
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': 'Error deleting record.'}), 500
+        return jsonify({'error': f'Error deleting record: {str(e)}'}), 500
