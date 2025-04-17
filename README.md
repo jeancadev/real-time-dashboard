@@ -90,8 +90,8 @@ Estas imágenes también son utilizadas automáticamente al levantar el entorno 
 
 1. Clona el repositorio:
 
-   git clone https://github.com/<TU_USUARIO>/<TU_REPOSITORIO>.git
-   cd <TU_REPOSITORIO>
+   git clone https://github.com/jeancadev/real-time-dashboard.git
+   cd real-time-dashboard
 2. Instala las dependencias del backend:
 
    cd backend
