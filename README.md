@@ -46,7 +46,49 @@ La aplicación sigue una arquitectura modular y se divide en dos grandes partes:
   - **Monitoreo:** Prometheus y Grafana recolectan y visualizan métricas del rendimiento en tiempo real.
   - **WebSockets:** Se utilizan para enviar notificaciones en tiempo real a la interfaz, eliminando el polling constante.
 
-*(Se puede incluir un diagrama de arquitectura generado con Draw.io o similar.)*
+### Diagrama de Arquitectura
+
+```mermaid
+graph TD
+    subgraph "Cliente"
+        A[Usuario Web] --> B[React Frontend]
+    end
+    
+    subgraph "Frontend - Container"
+        B --> C[Componentes React]
+        C --> D[Recharts]
+        C --> E[WebSocket Client]
+        C --> F[React Router]
+        C --> G[Estado Global]
+    end
+    
+    subgraph "Backend - Container"
+        H[Flask API] --> I[Autenticación JWT]
+        H --> J[APScheduler]
+        H --> K[SocketIO Server]
+        H --> L[Endpoints CRUD]
+        L --> M[SQLite/Postgres DB]
+    end
+    
+    subgraph "Servicios - Containers"
+        N[Redis Cache]
+        O[Prometheus]
+        P[Grafana]
+    end
+    
+    subgraph "CI/CD - GitHub Actions"
+        Q[Tests]
+        R[Build]
+        S[Deploy]
+    end
+    
+    B <--> H
+    E <--> K
+    L <--> N
+    H --> O
+    O --> P
+    Q --> R --> S
+```
 
 ---
 
@@ -178,7 +220,7 @@ El pipeline se define en .github/workflows/main.yml y se puede personalizar seg�
 - **Contenerización Completa:** Docker y Docker Compose orquestan todo el entorno de la aplicación.
 
 ### Posibles Mejoras Futuras
-- **Integración de HTTPS y Seguridad Adicional:** Configurar HTTPS con Nginx y Let’s Encrypt.
+- **Integración de HTTPS y Seguridad Adicional:** Configurar HTTPS con Nginx y Let's Encrypt.
 - **Refinamiento de UI/UX:** Mejorar animaciones, transiciones y la experiencia de usuario.
 - **WebSockets Avanzados:** Notificaciones personalizadas y actualizaciones en tiempo real para otros componentes.
 - **Optimización de Consultas y Caché:** Revisar el uso de Redis y optimizar consultas a la base de datos.
