@@ -48,7 +48,64 @@ La aplicación sigue una arquitectura modular y se divide en dos grandes partes:
 
 ### Diagrama de Arquitectura
 
-![Diagrama de Arquitectura del Sistema](https://mermaid.ink/img/pako:eNqNk09v2zAMxb-K4FMLONla_-WWSRmGdcMGDEWPmkVnK2aTSKOoIC2C-LuPspOtabd1PhH8Hh8p0TzRTEvKAppJCa9gNeWgC9AQV0pUWrYKNIzQaMHAcF6D4Twc4XUhqoYSg3yoXoWBbS7LQvCOTZkumOVpIYEbmP31Dzzxg13X97NWbxGqnrSB60JXBi6-_PxxOds7Fn-nAp1nPx1j4ys_73NeptwxXgPznCPZH0yGhfwEVIuMm_pHVE5B9CTflPLkX2Rdy3XvvF_PpZxkCnD_1zAzm91oXcz-uGwU_Abl5dNt0GgOl8FbQ1dBaxjwOB1kkFnlMqOg82qk5mBGN1m3c9jc2D2W-UaStXzfKjDKnYa40AKbTsO84LkGVYgM89xCKFgHnZJKUY0e-wvlb9AZj5TuFFDlHnIQ92iyQd1DsK9z0BxqmUX4V60jO9kH1JK6gXjDhI7svDn3dq9L8bTCnHtqPvfz_ddbC3aujn9AKHKpWsxl4WbE-GRSuDFp39nfTFtfuIfdZWxpmvHezJrp3WrJIcJmGZZK6WbuX9JbmPvw44Q-XxaP9Dkuad7jYolx-Sej5B0uf8Yzi0aq2aTpCc04tH11GFwbWt8XGmvJ7mMQT8V19jdxQh3k?type=png)
+```mermaid
+flowchart TD
+    %% Definición de estilos
+    classDef container fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    classDef service fill:#e1f5fe,stroke:#0288d1,stroke-width:1px;
+    classDef database fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px;
+    classDef client fill:#fff3e0,stroke:#e65100,stroke-width:1px;
+    classDef cicd fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px;
+
+    %% Cliente
+    subgraph cliente[Cliente]
+        A[Usuario Web] --> B[React Frontend]
+    end
+    class cliente client;
+
+    %% Frontend
+    subgraph frontend[Frontend - Container]
+        B --> C[Componentes React]
+        C --> D[Recharts]
+        C --> E[WebSocket Client]
+        C --> F[React Router]
+        C --> G[Estado Global]
+    end
+    class frontend container;
+
+    %% Backend
+    subgraph backend[Backend - Container]
+        H[Flask API] --> I[Autenticación JWT]
+        H --> J[APScheduler]
+        H --> K[SocketIO Server]
+        H --> L[Endpoints CRUD]
+        L --> M[(Base de Datos)]
+    end
+    class backend container;
+    class M database;
+
+    %% Servicios
+    subgraph servicios[Servicios - Containers]
+        N[(Redis Cache)]
+        O[Prometheus]
+        P[Grafana Dashboard]
+    end
+    class servicios service;
+    class N database;
+
+    %% CI/CD
+    subgraph cicd[CI/CD - GitHub Actions]
+        Q[Tests] --> R[Build] --> S[Deploy]
+    end
+    class cicd cicd;
+
+    %% Conexiones
+    B <--> H
+    E <--> K
+    L <--> N
+    H --> O
+    O --> P
+```
 
 ---
 
