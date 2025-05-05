@@ -48,47 +48,7 @@ La aplicación sigue una arquitectura modular y se divide en dos grandes partes:
 
 ### Diagrama de Arquitectura
 
-```mermaid
-graph TD
-    subgraph "Cliente"
-        A[Usuario Web] --> B[React Frontend]
-    end
-    
-    subgraph "Frontend - Container"
-        B --> C[Componentes React]
-        C --> D[Recharts]
-        C --> E[WebSocket Client]
-        C --> F[React Router]
-        C --> G[Estado Global]
-    end
-    
-    subgraph "Backend - Container"
-        H[Flask API] --> I[Autenticación JWT]
-        H --> J[APScheduler]
-        H --> K[SocketIO Server]
-        H --> L[Endpoints CRUD]
-        L --> M[SQLite/Postgres DB]
-    end
-    
-    subgraph "Servicios - Containers"
-        N[Redis Cache]
-        O[Prometheus]
-        P[Grafana]
-    end
-    
-    subgraph "CI/CD - GitHub Actions"
-        Q[Tests]
-        R[Build]
-        S[Deploy]
-    end
-    
-    B <--> H
-    E <--> K
-    L <--> N
-    H --> O
-    O --> P
-    Q --> R --> S
-```
+![Diagrama de Arquitectura del Sistema](https://mermaid.ink/img/pako:eNqNk09v2zAMxb-K4FMLONla_-WWSRmGdcMGDEWPmkVnK2aTSKOoIC2C-LuPspOtabd1PhH8Hh8p0TzRTEvKAppJCa9gNeWgC9AQV0pUWrYKNIzQaMHAcF6D4Twc4XUhqoYSg3yoXoWBbS7LQvCOTZkumOVpIYEbmP31Dzzxg13X97NWbxGqnrSB60JXBi6-_PxxOds7Fn-nAp1nPx1j4ys_73NeptwxXgPznCPZH0yGhfwEVIuMm_pHVE5B9CTflPLkX2Rdy3XvvF_PpZxkCnD_1zAzm91oXcz-uGwU_Abl5dNt0GgOl8FbQ1dBaxjwOB1kkFnlMqOg82qk5mBGN1m3c9jc2D2W-UaStXzfKjDKnYa40AKbTsO84LkGVYgM89xCKFgHnZJKUY0e-wvlb9AZj5TuFFDlHnIQ92iyQd1DsK9z0BxqmUX4V60jO9kH1JK6gXjDhI7svDn3dq9L8bTCnHtqPvfz_ddbC3aujn9AKHKpWsxl4WbE-GRSuDFp39nfTFtfuIfdZWxpmvHezJrp3WrJIcJmGZZK6WbuX9JbmPvw44Q-XxaP9Dkuad7jYolx-Sej5B0uf8Yzi0aq2aTpCc04tH11GFwbWt8XGmvJ7mMQT8V19jdxQh3k?type=png)
 
 ---
 
@@ -128,57 +88,143 @@ Estas imágenes también son utilizadas automáticamente al levantar el entorno 
 
 ## Instalación y Ejecución
 
-### Ejecución en Desarrollo
+### 🚀 Ejecución en Desarrollo
 
-1. Clona el repositorio:
+<details open>
+<summary><b>Instrucciones detalladas para entorno de desarrollo</b></summary>
 
-   git clone https://github.com/jeancadev/real-time-dashboard.git
-   cd real-time-dashboard
-2. Instala las dependencias del backend:
+#### 1️⃣ Clona el repositorio
 
-   cd backend
-   pip install -r requirements.txt
-3. Instala las dependencias del frontend:
+```bash
+git clone https://github.com/jeancadev/real-time-dashboard.git
+cd real-time-dashboard
+```
 
-   cd ../frontend
-   npm install
-4. Inicia el backend en modo desarrollo (python run.py)
-5. Inicia el frontend (npm start)
+#### 2️⃣ Configura el entorno del Backend
 
-6. Accede a la aplicación en `http://localhost:3000`.
+```bash
+# Navega al directorio del backend
+cd backend
 
-### Ejecución en Contenedores Docker
-1. Se configura correctamente el archivo `docker-compose.yml` para definir los servicios necesarios (backend, frontend, Redis, Prometheus y Grafana).
-Ademas se configura el archivo `Dockerfile` para el backend y frontend.
+# Crea un entorno virtual (opcional pero recomendado)
+python -m venv venv
 
-2. Construye y ejecuta los contenedores desde la raíz del proyecto ejecuta:
+# Activa el entorno virtual
+# En Windows:
+venv\Scripts\activate
+# En macOS/Linux:
+source venv/bin/activate
 
-   docker-compose up --build -d
+# Instala las dependencias
+pip install -r requirements.txt
 
-3. La aplicación se desplegara en;
-    
-    - Backend: `http://localhost:5000`
-    - Frontend: `http://localhost:3000`
-    - Redis: `http://localhost:6379`
-    - Prometheus: `http://localhost:9090`
-    - Grafana: `http://localhost:3001` (usuario y contraseña por defecto: admin/secret)
+# Configura las variables de entorno (opcional)
+# Copia el archivo .env.example a .env y edítalo según tus necesidades
+cp .env.example .env
+```
 
-4. Para detener los contenedores sin removerlos, ejecuta:
+#### 3️⃣ Configura el entorno del Frontend
 
-   docker-compose stop
+```bash
+# Navega al directorio del frontend
+cd ../frontend
 
-5. Para reiniciar los contenedores, ejecuta:
+# Instala las dependencias
+npm install
 
-   docker-compose start
+# Configura las variables de entorno (opcional)
+# Copia el archivo .env.example a .env y edítalo según tus necesidades
+cp .env.example .env
+```
 
-6. Para eliminar los contenedores y redes creadas, ejecuta:
-   docker-compose down
+#### 4️⃣ Inicia los servicios
 
-7. Para removerlos (incluyendo volúmenes y redes), ejecuta:  
+```bash
+# Inicia el backend (desde el directorio backend)
+cd ../backend
+python run.py
 
-   docker-compose down --volumes
+# En otra terminal, inicia el frontend (desde el directorio frontend)
+cd ../frontend
+npm start
+```
 
-### Características de la Aplicación
+#### 5️⃣ Accede a la aplicación
+
+Abre tu navegador y accede a:
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- API Backend: [http://localhost:5000](http://localhost:5000)
+
+</details>
+
+### 🐳 Ejecución en Contenedores Docker
+
+<details open>
+<summary><b>Instrucciones detalladas para despliegue con Docker</b></summary>
+
+#### 1️⃣ Clona el repositorio
+
+```bash
+git clone https://github.com/jeancadev/real-time-dashboard.git
+cd real-time-dashboard
+```
+
+#### 2️⃣ Configura las variables de entorno (opcional)
+
+```bash
+# Copia el archivo .env.example a .env y edítalo según tus necesidades
+cp .env.example .env
+```
+
+#### 3️⃣ Construye y ejecuta los contenedores
+
+```bash
+# Construye e inicia todos los servicios en segundo plano
+docker-compose up --build -d
+```
+
+#### 4️⃣ Verifica que los contenedores estén funcionando
+
+```bash
+docker-compose ps
+```
+
+#### 5️⃣ Accede a los servicios
+
+Una vez que todos los contenedores estén en funcionamiento, podrás acceder a:
+
+- **Dashboard Web:** [http://localhost:3000](http://localhost:3000)
+- **API Backend:** [http://localhost:5000](http://localhost:5000)
+- **Prometheus:** [http://localhost:9090](http://localhost:9090)
+- **Grafana:** [http://localhost:3001](http://localhost:3001) (usuario: admin | contraseña: secret)
+
+#### 6️⃣ Administración de contenedores
+
+```bash
+# Para ver los logs de los contenedores
+docker-compose logs -f
+
+# Para detener los contenedores sin eliminarlos
+docker-compose stop
+
+# Para iniciar los contenedores detenidos
+docker-compose start
+
+# Para reiniciar los contenedores
+docker-compose restart
+
+# Para detener y eliminar los contenedores
+docker-compose down
+
+# Para detener y eliminar los contenedores, volúmenes y redes
+docker-compose down --volumes
+```
+
+</details>
+
+---
+
+## Características de la Aplicación
 
 Backend
 - **Autenticación y Gestión de usuarios:** Registro, login y autenticación de usuarios con JWT.
