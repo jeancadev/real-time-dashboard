@@ -50,12 +50,12 @@ La aplicación sigue una arquitectura modular y se divide en dos grandes partes:
 
 ```mermaid
 flowchart TD
-    %% Definición de estilos
-    classDef container fill:#f9f9f9,stroke:#333,stroke-width:1px;
-    classDef service fill:#e1f5fe,stroke:#0288d1,stroke-width:1px;
-    classDef database fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px;
-    classDef client fill:#fff3e0,stroke:#e65100,stroke-width:1px;
-    classDef cicd fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px;
+    %% Definición de estilos con colores oscuros para mejor contraste
+    classDef container fill:#2d2d2d,stroke:#aaaaaa,stroke-width:1px,color:#ffffff;
+    classDef service fill:#1e3a5f,stroke:#64b5f6,stroke-width:1px,color:#ffffff;
+    classDef database fill:#1c3a1e,stroke:#81c784,stroke-width:1px,color:#ffffff;
+    classDef client fill:#4d300c,stroke:#ffcc80,stroke-width:1px,color:#ffffff;
+    classDef cicd fill:#3c1e4e,stroke:#ce93d8,stroke-width:1px,color:#ffffff;
 
     %% Cliente
     subgraph cliente[Cliente]
