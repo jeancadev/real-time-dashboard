@@ -1,105 +1,105 @@
-# Dashboard de Monitoreo de Recursos en Tiempo Real
+# Real-Time Resource Monitoring Dashboard
 
-Este proyecto es una aplicación full‑stack que ofrece un dashboard interactivo y robusto para el monitoreo de recursos en tiempo real. La aplicación integra múltiples tecnologías y prácticas de ingeniería de software para demostrar un entorno profesional, escalable y contenedorizado.
+This project is a full-stack application offering an interactive and robust dashboard for real-time resource monitoring. The application integrates multiple technologies and software engineering practices to demonstrate a professional, scalable, and containerized environment.
 
 ---
 
-## Índice
+## Table of Contents
 
-- [Arquitectura y Diagrama](#arquitectura-y-diagrama)
-- [Requisitos Previos](#requisitos-previos)
-- [Imágenes Docker Disponibles](#imágenes-docker-disponibles)
-- [Instalación y Ejecución](#instalación-y-ejecución)
-  - [Ejecución en Desarrollo](#ejecución-en-desarrollo)
-  - [Ejecución en Contenedores Docker](#ejecución-en-contenedores-docker)
-- [Características de la Aplicación](#características-de-la-aplicación)
+- [Architecture and Diagram](#architecture-and-diagram)
+- [Prerequisites](#prerequisites)
+- [Available Docker Images](#available-docker-images)
+- [Installation and Execution](#installation-and-execution)
+  - [Development Execution](#development-execution)
+  - [Execution in Docker Containers](#execution-in-docker-containers)
+- [Application Features](#application-features)
   - [Backend](#backend)
   - [Frontend](#frontend)
-  - [Servicios y Mejoras Adicionales](#servicios-y-mejoras-adicionales)
-- [CI/CD y Despliegue Automático](#cicd-y-despliegue-automático)
-- [Monitoreo y Optimización](#monitoreo-y-optimización)
-- [Historias y Logros Técnicos](#historias-y-logros-técnicos)
-- [Posibles Mejoras Futuras](#posibles-mejoras-futuras)
-- [Créditos y Referencias](#créditos-y-referencias)
+  - [Additional Services and Improvements](#additional-services-and-improvements)
+- [CI/CD and Automatic Deployment](#cicd-and-automatic-deployment)
+- [Monitoring and Optimization](#monitoring-and-optimization)
+- [Technical Stories and Achievements](#technical-stories-and-achievements)
+- [Potential Future Improvements](#potential-future-improvements)
+- [Credits and References](#credits-and-references)
 
 ---
 
-## Arquitectura y Diagrama
+## Architecture and Diagram
 
-La aplicación sigue una arquitectura modular y se divide en dos grandes partes:
+The application follows a modular architecture and is divided into two main parts:
 
-- **Backend:**  
-  - Desarrollado con Flask.
-  - Implementa autenticación con JWT, CRUD para usuarios y registros históricos.
-  - Emplea APScheduler para insertar datos simulados de clima y sismicidad de forma automática.
-  - Utiliza Flask-SocketIO para notificaciones en tiempo real.
-  
-- **Frontend:**  
-  - Construido con React, utilizando componentes modulares y CSS Modules para un diseño moderno.
-  - Integra gráficos interactivos con Recharts para visualizar datos históricos de clima y sismicidad.
-  - Emplea react-toastify para notificaciones y una gestión robusta de estados y autenticación.
-  
-- **Servicios Adicionales y Orquestación:**  
-  - **Docker & Docker Compose:** El entorno completo (backend, frontend, Redis, Prometheus, Grafana) se contenedorizó para garantizar un despliegue consistente y escalable.
-  - **CI/CD:** Pipeline configurado con GitHub Actions para pruebas automatizadas y despliegue continuo.
-  - **Caching:** Uso de Redis para cachear respuestas y reducir llamadas a APIs externas.
-  - **Monitoreo:** Prometheus y Grafana recolectan y visualizan métricas del rendimiento en tiempo real.
-  - **WebSockets:** Se utilizan para enviar notificaciones en tiempo real a la interfaz, eliminando el polling constante.
+- **Backend:**
+  - Developed with Flask.
+  - Implements JWT authentication, CRUD for users, and historical records.
+  - Uses APScheduler to automatically insert simulated weather and seismicity data.
+  - Utilizes Flask-SocketIO for real-time notifications.
 
-### Diagrama de Arquitectura
+- **Frontend:**
+  - Built with React, using modular components and CSS Modules for a modern design.
+  - Integrates interactive charts with Recharts to visualize historical weather and seismicity data.
+  - Uses react-toastify for notifications and robust state and authentication management.
+
+- **Additional Services and Orchestration:**
+  - **Docker & Docker Compose:** The entire environment (backend, frontend, Redis, Prometheus, Grafana) is containerized to ensure consistent and scalable deployment.
+  - **CI/CD:** Pipeline configured with GitHub Actions for automated testing and continuous deployment.
+  - **Caching:** Use of Redis to cache responses and reduce calls to external APIs.
+  - **Monitoring:** Prometheus and Grafana collect and visualize real-time performance metrics.
+  - **WebSockets:** Used to send real-time notifications to the interface, eliminating constant polling.
+
+### Architecture Diagram
 
 ```mermaid
 flowchart TD
-    %% Definición de estilos con colores oscuros para mejor contraste
+    %% Style definitions with dark colors for better contrast
     classDef container fill:#2d2d2d,stroke:#aaaaaa,stroke-width:1px,color:#ffffff;
     classDef service fill:#1e3a5f,stroke:#64b5f6,stroke-width:1px,color:#ffffff;
     classDef database fill:#1c3a1e,stroke:#81c784,stroke-width:1px,color:#ffffff;
     classDef client fill:#4d300c,stroke:#ffcc80,stroke-width:1px,color:#ffffff;
     classDef cicd fill:#3c1e4e,stroke:#ce93d8,stroke-width:1px,color:#ffffff;
 
-    %% Cliente
-    subgraph cliente[Cliente]
-        A[Usuario Web] --> B[React Frontend]
+    %% Client
+    subgraph client[Client]
+        A[Web User] --> B[React Frontend]
     end
-    class cliente client;
+    class client client;
 
     %% Frontend
     subgraph frontend[Frontend - Container]
-        B --> C[Componentes React]
+        B --> C[React Components]
         C --> D[Recharts]
         C --> E[WebSocket Client]
         C --> F[React Router]
-        C --> G[Estado Global]
+        C --> G[Global State]
     end
     class frontend container;
 
     %% Backend
     subgraph backend[Backend - Container]
-        H[Flask API] --> I[Autenticación JWT]
+        H[Flask API] --> I[JWT Authentication]
         H --> J[APScheduler]
         H --> K[SocketIO Server]
-        H --> L[Endpoints CRUD]
-        L --> M[(Base de Datos)]
+        H --> L[CRUD Endpoints]
+        L --> M[(Database)]
     end
     class backend container;
     class M database;
 
-    %% Servicios
-    subgraph servicios[Servicios - Containers]
+    %% Services
+    subgraph services[Services - Containers]
         N[(Redis Cache)]
         O[Prometheus]
         P[Grafana Dashboard]
     end
-    class servicios service;
+    class services service;
     class N database;
 
     %% CI/CD
-    subgraph cicd[CI/CD - GitHub Actions]
+    subgraph cicd_gh[CI/CD - GitHub Actions]
         Q[Tests] --> R[Build] --> S[Deploy]
     end
-    class cicd cicd;
+    class cicd_gh cicd;
 
-    %% Conexiones
+    %% Connections
     B <--> H
     E <--> K
     L <--> N
@@ -109,25 +109,25 @@ flowchart TD
 
 ---
 
-## Requisitos Previos
+## Prerequisites
 
-- **Docker** y **Docker Compose** instalados.
-- **Git** para el control de versiones.
-- Acceso a GitHub para el CI/CD con GitHub Actions.
-- Variables de entorno definidas en un archivo `.env` (opcional) para configuraciones sensibles como claves API, `SECRET_KEY`, etc.
+- **Docker** and **Docker Compose** installed.
+- **Git** for version control.
+- GitHub access for CI/CD with GitHub Actions.
+- Environment variables defined in a `.env` file (optional) for sensitive configurations like API keys, `SECRET_KEY`, etc.
 
 ---
 
-## Imágenes Docker Disponibles
+## Available Docker Images
 
-A continuación se listan las imágenes oficiales publicadas en Docker Hub para facilitar el despliegue del backend y frontend de este proyecto:
+Below are the official images published on Docker Hub to facilitate the deployment of the backend and frontend of this project:
 
 - **Backend:** [`26jeanca/dashboard-backend:v1.0`](https://hub.docker.com/r/26jeanca/dashboard-backend)
 - **Frontend:** [`26jeanca/dashboard-frontend:v1.0`](https://hub.docker.com/r/26jeanca/dashboard-frontend)
 
-### Uso rápido
+### Quick Use
 
-Puedes descargar y ejecutar las imágenes directamente con los siguientes comandos:
+You can download and run the images directly with the following commands:
 
 ```bash
 # Backend
@@ -139,141 +139,141 @@ Puedes descargar y ejecutar las imágenes directamente con los siguientes comand
  docker run -d -p 3000:3000 26jeanca/dashboard-frontend:v1.0
 ```
 
-Estas imágenes también son utilizadas automáticamente al levantar el entorno con `docker-compose`.
+These images are also used automatically when setting up the environment with `docker-compose`.
 
 ---
 
-## Instalación y Ejecución
+## Installation and Execution
 
-### 🚀 Ejecución en Desarrollo
+### 🚀 Development Execution
 
 <details open>
-<summary><b>Instrucciones detalladas para entorno de desarrollo</b></summary>
+<summary><b>Detailed instructions for development environment</b></summary>
 
-#### 1️⃣ Clona el repositorio
+#### 1️⃣ Clone the repository
 
 ```bash
 git clone https://github.com/jeancadev/real-time-dashboard.git
 cd real-time-dashboard
 ```
 
-#### 2️⃣ Configura el entorno del Backend
+#### 2️⃣ Configure the Backend environment
 
 ```bash
-# Navega al directorio del backend
+# Navigate to the backend directory
 cd backend
 
-# Crea un entorno virtual (opcional pero recomendado)
+# Create a virtual environment (optional but recommended)
 python -m venv venv
 
-# Activa el entorno virtual
-# En Windows:
+# Activate the virtual environment
+# On Windows:
 venv\Scripts\activate
-# En macOS/Linux:
+# On macOS/Linux:
 source venv/bin/activate
 
-# Instala las dependencias
+# Install dependencies
 pip install -r requirements.txt
 
-# Configura las variables de entorno (opcional)
-# Copia el archivo .env.example a .env y edítalo según tus necesidades
+# Configure environment variables (optional)
+# Copy the .env.example file to .env and edit it according to your needs
 cp .env.example .env
 ```
 
-#### 3️⃣ Configura el entorno del Frontend
+#### 3️⃣ Configure the Frontend environment
 
 ```bash
-# Navega al directorio del frontend
+# Navigate to the frontend directory
 cd ../frontend
 
-# Instala las dependencias
+# Install dependencies
 npm install
 
-# Configura las variables de entorno (opcional)
-# Copia el archivo .env.example a .env y edítalo según tus necesidades
+# Configure environment variables (optional)
+# Copy the .env.example file to .env and edit it according to your needs
 cp .env.example .env
 ```
 
-#### 4️⃣ Inicia los servicios
+#### 4️⃣ Start the services
 
 ```bash
-# Inicia el backend (desde el directorio backend)
+# Start the backend (from the backend directory)
 cd ../backend
 python run.py
 
-# En otra terminal, inicia el frontend (desde el directorio frontend)
+# In another terminal, start the frontend (from the frontend directory)
 cd ../frontend
 npm start
 ```
 
-#### 5️⃣ Accede a la aplicación
+#### 5️⃣ Access the application
 
-Abre tu navegador y accede a:
+Open your browser and access:
 - Frontend: [http://localhost:3000](http://localhost:3000)
-- API Backend: [http://localhost:5000](http://localhost:5000)
+- Backend API: [http://localhost:5000](http://localhost:5000)
 
 </details>
 
-### 🐳 Ejecución en Contenedores Docker
+### 🐳 Execution in Docker Containers
 
 <details open>
-<summary><b>Instrucciones detalladas para despliegue con Docker</b></summary>
+<summary><b>Detailed instructions for deployment with Docker</b></summary>
 
-#### 1️⃣ Clona el repositorio
+#### 1️⃣ Clone the repository
 
 ```bash
 git clone https://github.com/jeancadev/real-time-dashboard.git
 cd real-time-dashboard
 ```
 
-#### 2️⃣ Configura las variables de entorno (opcional)
+#### 2️⃣ Configure environment variables (optional)
 
 ```bash
-# Copia el archivo .env.example a .env y edítalo según tus necesidades
+# Copy the .env.example file to .env and edit it according to your needs
 cp .env.example .env
 ```
 
-#### 3️⃣ Construye y ejecuta los contenedores
+#### 3️⃣ Build and run the containers
 
 ```bash
-# Construye e inicia todos los servicios en segundo plano
+# Build and start all services in the background
 docker-compose up --build -d
 ```
 
-#### 4️⃣ Verifica que los contenedores estén funcionando
+#### 4️⃣ Verify that the containers are running
 
 ```bash
 docker-compose ps
 ```
 
-#### 5️⃣ Accede a los servicios
+#### 5️⃣ Access the services
 
-Una vez que todos los contenedores estén en funcionamiento, podrás acceder a:
+Once all containers are running, you can access:
 
-- **Dashboard Web:** [http://localhost:3000](http://localhost:3000)
-- **API Backend:** [http://localhost:5000](http://localhost:5000)
+- **Web Dashboard:** [http://localhost:3000](http://localhost:3000)
+- **Backend API:** [http://localhost:5000](http://localhost:5000)
 - **Prometheus:** [http://localhost:9090](http://localhost:9090)
-- **Grafana:** [http://localhost:3001](http://localhost:3001) (usuario: admin | contraseña: secret)
+- **Grafana:** [http://localhost:3001](http://localhost:3001) (username: admin | password: secret)
 
-#### 6️⃣ Administración de contenedores
+#### 6️⃣ Container management
 
 ```bash
-# Para ver los logs de los contenedores
+# To view container logs
 docker-compose logs -f
 
-# Para detener los contenedores sin eliminarlos
+# To stop containers without removing them
 docker-compose stop
 
-# Para iniciar los contenedores detenidos
+# To start stopped containers
 docker-compose start
 
-# Para reiniciar los contenedores
+# To restart containers
 docker-compose restart
 
-# Para detener y eliminar los contenedores
+# To stop and remove containers
 docker-compose down
 
-# Para detener y eliminar los contenedores, volúmenes y redes
+# To stop and remove containers, volumes, and networks
 docker-compose down --volumes
 ```
 
@@ -281,58 +281,58 @@ docker-compose down --volumes
 
 ---
 
-## Características de la Aplicación
+## Application Features
 
-Backend
-- **Autenticación y Gestión de usuarios:** Registro, login y autenticación de usuarios con JWT.
-- **Inserción Automática de Registros:** Uso de APScheduler para insertar datos simulados de clima y sismicidad.
-- **API REST:** Endpoints para consultar, insertar, actualizar y eliminar registros con paginación y filtros.
-- **WebSockets:** Uso de Flask-SocketIO para enviar notificaciones en tiempo real a los usuarios.
-- **Cacheo de Respuestas:** Uso de Redis para cachear respuestas y reducir llamadas a APIs externas.
-- **Métricas y Monitoreo:** Integración con Prometheus para recolectar métricas de rendimiento y Grafana para visualizarlas.
+### Backend
+- **Authentication and User Management:** User registration, login, and authentication with JWT.
+- **Automatic Record Insertion:** Use of APScheduler to insert simulated weather and seismicity data.
+- **REST API:** Endpoints to query, insert, update, and delete records with pagination and filters.
+- **WebSockets:** Use of Flask-SocketIO to send real-time notifications to users.
+- **Response Caching:** Use of Redis to cache responses and reduce calls to external APIs.
+- **Metrics and Monitoring:** Integration with Prometheus to collect performance metrics and Grafana to visualize them.
 
-Frontend
-- **Interfaz Moderna:** Construida con React, componentes modulares y animaciones suaves.
-- **Visualización de Datos Históricos:** Graficos interactivos con Recharts para visualizar datos históricos de clima y sismicidad.
-- **Notificaciones en Tiempo Real:** Uso de react-toastify para alertas de acciones y cambios en la autenticación.
-- **Controles de Paginación y Filtros:** Implementación de paginación y filtros para grandes volumenes de datos.
+### Frontend
+- **Modern Interface:** Built with React, modular components, and smooth animations.
+- **Historical Data Visualization:** Interactive charts with Recharts to visualize historical weather and seismicity data.
+- **Real-Time Notifications:** Use of react-toastify for action alerts and authentication changes.
+- **Pagination and Filter Controls:** Implementation of pagination and filters for large volumes of data.
 
-### Servicios y Mejoras Adicionales
-- **Docker & Docker Compose:** Contenerización completa para garantizar un entorno consistente y escalable.
-- **CI/CD con GitHub Actions:** Pipeline automatizado para tests, builds y despliegue continuo.
-- **Monitoreo:** Integración con Prometheus y paneles de Grafana para recolectar y visualizar métricas de rendimiento.
-- **Cache:** Redis para mejorar el rendimiento en consultas repetitivas.
-- **WebSockets:** Para notificaciones en tiempo real, eliminando la necesidad de polling constante.
+### Additional Services and Improvements
+- **Docker & Docker Compose:** Full containerization to ensure a consistent and scalable environment.
+- **CI/CD with GitHub Actions:** Automated pipeline for tests, builds, and continuous deployment.
+- **Monitoring:** Integration with Prometheus and Grafana dashboards to collect and visualize performance metrics.
+- **Cache:** Redis to improve performance on repetitive queries.
+- **WebSockets:** For real-time notifications, eliminating the need for constant polling.
 
-### CI/CD y Despliegue Automático
-Utilizamos GitHub Actions para automatizar la calidad y despliegue de la aplicación. Cada push a la rama principal activa el pipeline que:
-- **Ejecuta test en el backend.**
-- **Construye la aplicación frontend.**
-- **Despliega automáticamente la aplicación en el servidor mediante SSH y Docker Compose.**
-El pipeline se define en .github/workflows/main.yml y se puede personalizar según las necesidades del proyecto.
+### CI/CD and Automatic Deployment
+We use GitHub Actions to automate the quality and deployment of the application. Each push to the main branch triggers the pipeline which:
+- **Runs tests on the backend.**
+- **Builds the frontend application.**
+- **Automatically deploys the application to the server via SSH and Docker Compose.**
+The pipeline is defined in `.github/workflows/main.yml` and can be customized according to project needs.
 
-### Monitoreo y Optimización
-- **Prometheus:** Corriendo en http://localhost:9090, recolecta métricas del backend.
-- **Grafana:** Dashboard en http://localhost:3001, visualiza las métricas recolectadas por Prometheus (usuario y contraseña por defecto: admin/secret).
-- **Redis:** Cacheo de respuestas para mejorar el rendimiento y reducir la carga en el backend.
+### Monitoring and Optimization
+- **Prometheus:** Running at http://localhost:9090, collects metrics from the backend.
+- **Grafana:** Dashboard at http://localhost:3001, visualizes metrics collected by Prometheus (default username/password: admin/secret).
+- **Redis:** Response caching to improve performance and reduce load on the backend.
 
-### Historias y Logros Técnicos
-- **WebSockets y Notificaciones en Tiempo Real:** Integración exitosa de Flask-SocketIO y react-toastify.
-- **Pipeline de CI/CD:** Automatización de tests, builds y despliegue continuo con GitHub Actions.
-- **Optimización y Escalabilidad:** Uso de APScheduler, Redis, paginación y filtros para manejar grandes volúmenes de datos.
-- **Contenerización Completa:** Docker y Docker Compose orquestan todo el entorno de la aplicación.
+### Technical Stories and Achievements
+- **WebSockets and Real-Time Notifications:** Successful integration of Flask-SocketIO and react-toastify.
+- **CI/CD Pipeline:** Automation of tests, builds, and continuous deployment with GitHub Actions.
+- **Optimization and Scalability:** Use of APScheduler, Redis, pagination, and filters to handle large data volumes.
+- **Full Containerization:** Docker and Docker Compose orchestrate the entire application environment.
 
-### Posibles Mejoras Futuras
-- **Integración de HTTPS y Seguridad Adicional:** Configurar HTTPS con Nginx y Let's Encrypt.
-- **Refinamiento de UI/UX:** Mejorar animaciones, transiciones y la experiencia de usuario.
-- **WebSockets Avanzados:** Notificaciones personalizadas y actualizaciones en tiempo real para otros componentes.
-- **Optimización de Consultas y Caché:** Revisar el uso de Redis y optimizar consultas a la base de datos.
-- **Escalabilidad Horizontal:** Preparar el sistema para escalabilidad con Kubernetes o Docker Swarm.
+### Potential Future Improvements
+- **HTTPS Integration and Additional Security:** Configure HTTPS with Nginx and Let's Encrypt.
+- **UI/UX Refinement:** Improve animations, transitions, and user experience.
+- **Advanced WebSockets:** Custom notifications and real-time updates for other components.
+- **Query and Cache Optimization:** Review Redis usage and optimize database queries.
+- **Horizontal Scalability:** Prepare the system for scalability with Kubernetes or Docker Swarm.
 
-### Créditos y Referencias
-- **Flask y Flask-SocketIO:** [Flask](https://flask.palletsprojects.com/) y [Flask-SocketIO](https://flask-socketio.readthedocs.io/en/latest/)
-- **React y Recharts:** [React](https://reactjs.org/) y [Recharts](https://recharts.org/en-US/)
-- **Docker y Docker Compose:** [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/)
+### Credits and References
+- **Flask & Flask-SocketIO:** [Flask](https://flask.palletsprojects.com/) & [Flask-SocketIO](https://flask-socketio.readthedocs.io/en/latest/)
+- **React & Recharts:** [React](https://reactjs.org/) & [Recharts](https://recharts.org/en-US/)
+- **Docker & Docker Compose:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
 - **Redis:** [Redis](https://redis.io/)
-- **Prometheus y Grafana:** [Prometheus](https://prometheus.io/) y [Grafana](https://grafana.com/)
+- **Prometheus & Grafana:** [Prometheus](https://prometheus.io/) & [Grafana](https://grafana.com/)
 - **GitHub Actions:** [GitHub Actions](https://docs.github.com/en/actions)
